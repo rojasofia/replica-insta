@@ -23,7 +23,6 @@ const AppRouter = () => {
             <Route path="perfil" element={<Perfil />}>
                  <Route path="editPerfil" element={<ModalEditPerfil />}/>
             </Route>
-            <Route path="perfil" element={<Perfil />} />
         </Routes>
     </BrowserRouter>
 }
