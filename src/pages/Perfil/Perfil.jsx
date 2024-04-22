@@ -269,10 +269,10 @@ const UserProfile = () => {
           )}
           {activeTab === 'Album' && (
             <>
-              {/* Ejemplo de imágenes para el tab Album */}
+
               <ImageWrapper onClick={() => handleImageClick('6')}><Image src="https://i.pinimg.com/564x/0d/62/15/0d6215dbb4d6f824787ba192f1dc7a84.jpg" alt="Album 1" /></ImageWrapper>
               <ImageWrapper onClick={() => handleImageClick('7')}><Image src="https://i.pinimg.com/564x/d0/71/b6/d071b61fcd51cc0677359d6a35ed11d5.jpg" alt="Album 1" /></ImageWrapper>
-              {/* ... más imágenes de álbum */}
+              
             </>
           )}
           {activeTab === 'Tag' && (
