@@ -20,7 +20,7 @@ const AppRouter = () => {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Index />} />
                     <Route path="home" element={<Home />} />
-                    <Route path="details" element={<Details />} />
+                    <Route path="details/:id"  element={<Details />} />
                 </Route>
                 <Route path="perfil" element={<Perfil />}>
                     <Route path="editPerfil" element={<ModalEditPerfil />} />
