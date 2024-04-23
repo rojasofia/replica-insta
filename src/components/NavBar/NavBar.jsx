@@ -1,6 +1,8 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components'
 import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faSearch, faPlus, faBell } from '@fortawesome/free-solid-svg-icons';
 
 const GlobalStyle = createGlobalStyle`
  body, #root {
@@ -31,7 +33,7 @@ const StyledNav = styled.nav`
                 padding: 10px;
 
                 div{
-                    img{
+                    .imgIconos{
                         width: 30px;
                         height: 30px;
                         border-radius:100px;
@@ -46,7 +48,7 @@ const StyledNav = styled.nav`
                     left: 50%; /* Centra el ícono horizontalmente */
                     transform: translateX(-50%); /* Ajusta la posición horizontal para centrarlo correctamente */
 
-                    img{
+                    .imgIconos{
                         width: 30px; /* Aumenta el ancho */
                         height: 30px; /* Aumenta la altura */
                         padding: 20px;
@@ -68,27 +70,27 @@ const StyledNav = styled.nav`
 const links = [
     {
         label: "FeedHome",
-        icon: '/house-door-fill.svg',
+        icon: faHouse,
         link: "home"
     },
     {
         label: "Search",
-        icon: '/search.svg',
+        icon: faSearch,
         link: "home"
     },
     {
         label: "AddPublicacion",
-        icon: '/plus-lg.svg',
+        icon: faPlus,
         link: "publicacion"
     },
     {
         label: "Notifications",
-        icon: '/bell-fill.svg',
+        icon: faBell,
         link: "home"
     },
     {
         label: "Profile",
-        icon: 'https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg',
+        iconProfile: 'https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg',
         link: "perfil"
     }
 ];
@@ -96,24 +98,25 @@ const links = [
 const NavBar = () => {
     return (
         <>
-        <GlobalStyle />
-        <StyledNav>
-            <nav className='containerNav'>
-                <ul>
-                    {
-                        links.map((item, index) => (
-                            <li key={index} className={item.label === "AddPublicacion" ? "highlighted-icon" : ""}>
-                                <NavLink className={({ isActive }) => isActive ? "link active" : "link"} to={item.link}>
-                                    <div>
-                                        <img src={item.icon} alt="Iconos" />
-                                    </div>
-                                </NavLink>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </nav>
-        </StyledNav>
+            <GlobalStyle />
+            <StyledNav>
+                <nav className='containerNav'>
+                    <ul>
+                        {
+                            links.map((item, index) => (
+                                <li key={index} className={item.label === "AddPublicacion" ? "highlighted-icon" : ""}>
+                                    <NavLink className={({ isActive }) => isActive ? "link active" : "link"} to={item.link}>
+                                        <div>
+                                            {item.label !== "Profile" && <FontAwesomeIcon className='imgIconos' icon={item.icon} style={{ color: 'white' }}  />}
+                                            {item.label === "Profile" && <img src={item.iconProfile} alt="Profile" className='imgIconos' />}
+                                        </div>
+                                    </NavLink>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </nav>
+            </StyledNav>
         </>
     )
 }
