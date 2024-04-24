@@ -25,7 +25,6 @@ const fetchPostData = async () => {
     setPostData(data);
  } catch (error) {
     console.error('Error:', error);
-    // Aquí puedes manejar el error de manera más específica, por ejemplo, mostrando un mensaje al usuario
  }
 };
 
