@@ -20,6 +20,7 @@ const StyledNav = styled.nav`
 
     .containerNav{
         background-color: #FF7674;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
         ul{
             display:flex;
             justify-content: space-around;

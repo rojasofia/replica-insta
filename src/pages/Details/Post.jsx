@@ -15,6 +15,24 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const DeviceStatusBar = styled.div`
+  background-color: #f8f9fa; 
+  padding: 5px 30px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  z-index: 1;
+`;
+
+const Icon = styled.img`
+margin-right: 10px; 
+`;
+
+const Time = styled.span`
+  font-size: 1em; 
+  color: #333; 
+
+`;
 
 const StyledPost = styled.nav`
 .post {
@@ -34,6 +52,7 @@ const StyledPost = styled.nav`
             }
             form{
                 input{
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
                 width: 356px;
                 height: 40px;
                 top: 791px;
@@ -63,6 +82,7 @@ const StyledPost = styled.nav`
         width: 428px;  
         height: 558px;
         border-radius: 30px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);         
     }
     .post-info{
 
@@ -87,6 +107,7 @@ const StyledPost = styled.nav`
             margin: 10px;
             position: relative; 
             z-index: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
 
             img{
                 width: 48px;
@@ -126,10 +147,10 @@ const StyledPost = styled.nav`
 
 `
 const userLogged = {
-        label: "Profile",
-        iconProfile: 'https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg',
-        link: "perfil"
-    }
+    label: "Profile",
+    iconProfile: 'https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg',
+    link: "perfil"
+}
 
 const Post = ({ post, currentUser }) => {
     const [users, setUsers] = useState([]);
@@ -148,15 +169,14 @@ const Post = ({ post, currentUser }) => {
     }, []);
 
     useEffect(() => {
-        // Obtener los likes del servidor
         fetch(`${URL_API}posts/${post.id}/likes`)
             .then(response => response.json())
             .then(likes => {
-                // Establecer el contador de likes en la cantidad de likes obtenidos
                 setLikesCount(likes.length);
+                setLiked(currentUser && likes.find(like => like.userId === currentUser.id));
             })
             .catch(error => console.error('Error al obtener likes:', error));
-    }, [post.id]);
+    }, [post.id, currentUser]);
 
     useEffect(() => {
         // Obtener los comentarios del servidor
@@ -211,26 +231,41 @@ const Post = ({ post, currentUser }) => {
         const url = `${URL_API}posts/${post.id}/likes`;
 
         fetch(url, {
-            method: liked ? 'DELETE' : 'POST', // Verifica si el usuario ya dio "me gusta" al post para enviar la solicitud correcta
+            method: liked ? 'DELETE' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+                userId: user.id,
+                like: 1,
+            }),
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Like añadido o eliminado:', data);
+                if (liked) {
+                    setLikesCount(likesCount - 1);
+                } else {
+                    setLikesCount(likesCount + 1);
+                }
                 setLiked(!liked);
-                // Actualizar el contador de likes basado en si se añadió o eliminó el "me gusta"
-                setLikesCount(liked ? likesCount - 1 : likesCount + 1);
             })
             .catch(error => console.error('Error al añadir o eliminar like:', error));
     };
+
     // Busca el usuario que corresponde al post
     const user = users.find(user => user.id === post.userId);
 
     return (
         <>
             <StyledPost>
+                <DeviceStatusBar>
+                    <Icon src="/public/connection.png" alt="WiFi" />
+                    <Time>9:41</Time>
+                    <div>
+                        <Icon src="/public/red.png" alt="Signal" />
+                        <Icon src="/public/battery.png" alt="Battery" />
+                    </div>
+                </DeviceStatusBar>
                 <div className="post">
                     <img className="postImage" src={post.media} alt={post.caption} />
                     <div className="post-info">
@@ -242,7 +277,7 @@ const Post = ({ post, currentUser }) => {
                                 </>
                             )}
                             <div className="post-stats">
-                                <FontAwesomeIcon className="Iconos" icon={faHeart} onClick={handleLike} color={liked ? "#eb4d4d" : "#c0a7caeb"} /> <label>{post.likes.length}</label>
+                                <FontAwesomeIcon className="Iconos" icon={faHeart} onClick={handleLike} color={liked ? "#eb4d4d" : "#c0a7caeb"} /> <label>{likesCount}</label>
                                 <FontAwesomeIcon className="Iconos" icon={faComment} style={{ color: "#c0a7caeb" }} />  <label>{commentsCount}</label>
                                 <FontAwesomeIcon className="Iconos" icon={faShare} style={{ color: "#c0a7caeb" }} /> <label>{post.tag}</label>
                             </div>
@@ -258,7 +293,7 @@ const Post = ({ post, currentUser }) => {
                                 onChange={handleCommentChange}
                                 placeholder="Write comment as username...."
                             />
-                            <button type="submit" onClick={handleCommentSubmit} ><FontAwesomeIcon icon={faPaperPlane} style={{ color: "#FF7674" }}  /></button>
+                            <button type="submit" onClick={handleCommentSubmit} ><FontAwesomeIcon icon={faPaperPlane} style={{ color: "#FF7674" }} /></button>
                         </form>
                     </div>
                 </div>
