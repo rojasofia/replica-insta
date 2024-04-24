@@ -257,8 +257,6 @@ const UserProfile = () => {
         <UserInfo>
           <span>10.7M Followers</span>
           <span>108.3M Likes</span>
-          {/* <span>J. Hello Guys</span>
-          <span>Follow me and like my post</span> */}
         </UserInfo>
         <div>
           <ButtonGroup>
