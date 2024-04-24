@@ -1,0 +1,36 @@
+.container-p {
+  margin-bottom: 100px;
+}
+
+.card-container {
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 50px;
+}
+.header-post {
+  display: flex;
+  align-items: center; /* Alinea verticalmente la imagen y el texto */
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.header-post img {
+  width: 30px; /* Tamaño del avatar */
+  height: 30px; /* Tamaño del avatar */
+  border-radius: 50%; /* Hace la imagen circular */
+}
+
+.header-post p {
+  margin: 0; /* Remueve el margen por defecto del párrafo */
+  color: #333; /* Color del texto, cambia según necesites */
+  font-size: 25px; /* Tamaño de la fuente, ajusta según necesites */
+  font-weight: 600;
+}
+.img-main img {
+  width: 100%;
+  height: 400px;
+  object-fit: fill;
+  border-radius: 10px;
+}

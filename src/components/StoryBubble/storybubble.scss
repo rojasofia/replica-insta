@@ -1,0 +1,31 @@
+/* src/StoryBubble.css */
+.story-bubble {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #c32aa3;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 10px; /* Espacio entre cada burbuja */
+}
+
+.story-container {
+  white-space: nowrap; /* Evita que las burbujas se desborden hacia abajo */
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  padding: 10px; /* Agrega un pequeño espacio para que las burbujas no estén pegadas al borde */
+}
+.story-bubble img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsionarse */
+}
+/* Oculta la barra de desplazamiento de WebKit */
+.story-container::-webkit-scrollbar {
+  width: 0; /* Establece el ancho a 0 */
+  background: transparent; /* Establece el color de fondo transparente */
+}
+
+.story-bubble:last-child {
+  margin-right: 0; /* Elimina el margen derecho del último elemento */
+}

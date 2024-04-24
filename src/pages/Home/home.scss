@@ -1,3 +1,29 @@
+<<<<<<< HEAD
 .home {
   background: #f8f8f8;
+=======
+body {
+  background-color: #f8f8f8;
+}
+
+.header-main {
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+.header-text {
+  display: flex;
+  align-items: center;
+}
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.header-main img {
+  width: 30px;
+  height: 30px;
+>>>>>>> feature/feature/home
 }

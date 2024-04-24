@@ -8,12 +8,13 @@ const GlobalStyle = createGlobalStyle`
  body, #root {
     margin: 0;
     padding: 0;
-    margin-bottom: 80px;
+    margin-bottom: 140px;
  }
 `;
 
 const StyledNav = styled.nav`
     position: fixed;
+    z-index: 3;
     bottom: 0;
     width: 100%;
 
