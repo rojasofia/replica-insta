@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { endpoints } from '../../services/data';
 
 
 
@@ -185,27 +186,41 @@ const ActiveTab = styled(Tab)`
   border-bottom: 2px solid pink;
 `;
 
-// Componente de perfil
 const UserProfile = () => {
-   // Estado para manejar el tab activo
-   const [activeTab, setActiveTab] = useState('Photos');
-   const [isFollowing, setIsFollowing] = useState(false);
-   const navigate = useNavigate(); // Hook para la navegación
+  const [activeTab, setActiveTab] = useState('Photos');
+  const [posts, setPosts] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
 
-   // Función para cambiar el tab activo
+  useEffect(() => {
+    const getAllPosts = async () => {
+      try {
+        const response = await fetch(endpoints.posts);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts: ", error);
+      }
+    };
+
+    getAllPosts();
+  }, []);
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
   const handleFollowClick = () => {
-    setIsFollowing(!isFollowing); // Cambia el estado de seguir a no seguir y viceversa
+    setIsFollowing(!isFollowing);
   };
 
-  // Función para manejar el clic en una imagen, video o tag
   const handleImageClick = (id) => {
-    navigate(`/details/${id}`); // Usa el ID de la imagen para la navegación
+    navigate(`/details/${id}`);
   };
-  
+
   return (
     <>
       <DeviceStatusBar>
@@ -239,50 +254,41 @@ const UserProfile = () => {
       </ProfileContainer>
       <ImageSectionContainer>
       <Tabs>
-          <Tab onClick={() => handleTabClick('Photos')} className={activeTab === 'Photos' ? 'active' : ''}>Photos</Tab>
-          <Tab onClick={() => handleTabClick('Videos')} className={activeTab === 'Videos' ? 'active' : ''}>Videos</Tab>
-          <Tab onClick={() => handleTabClick('Album')} className={activeTab === 'Album' ? 'active' : ''}>Album</Tab>
-          <Tab onClick={() => handleTabClick('Tag')} className={activeTab === 'Tag' ? 'active' : ''}>Tag</Tab>
+          <Tab onClick={() => handleTabClick('Photos')} className={activeTab === 'Photos' ? 'active' : ''}>
+            Photos
+          </Tab>
+          <Tab onClick={() => handleTabClick('Videos')} className={activeTab === 'Videos' ? 'active' : ''}>
+            Videos
+          </Tab>
+          <Tab onClick={() => handleTabClick('Album')} className={activeTab === 'Album' ? 'active' : ''}>
+            Album
+          </Tab>
+          {/* Agrega más Tabs si son necesarios */}
         </Tabs>
-      <ImageGrid>
-      {activeTab === 'Photos' && (
-            <>
-              {/* Ejemplos de imágenes */}
-              <ImageWrapper onClick={() => handleImageClick('1')}><Image src="https://i.pinimg.com/564x/8e/76/0f/8e760fb61a10a0e3e53e9b78da659d8c.jpg" alt="Kitten 1" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('2')}  ><Image src="https://rare-gallery.com/thumbs/325591-Jennie-BLACKPINK-Photoshoot-4K-iphone-wallpaper.jpg" alt="Kitten 3" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('3')}  ><Image src="https://mcdn.wallpapersafari.com/335/28/61/ZxJM2z.jpg" alt="Kitten 3" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('4')}  ><Image src="https://wallpapercave.com/wp/wp12886525.jpg" alt="Kitten 4" /></ImageWrapper>
-              {/* Añadir más imágenes según sea necesario */}
-            </>
-          )}
-          {activeTab === 'Videos' && (
-            <>
-              {/* Ejemplos de videos */}
-              <ImageWrapper onClick={() => handleImageClick('5')}>
-                <video width="100%" height="auto" controls>
-                  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+        <ImageGrid>
+          {activeTab === 'Photos' && posts.map((post) => (
+            post.type === 'photo' && post.media && (
+              <ImageWrapper key={post.id} onClick={() => handleImageClick(post.id)}>
+                <Image src={post.media} alt={post.caption || 'Post image'} />
               </ImageWrapper>
-              {/* Añadir más videos según sea necesario */}
-            </>
-          )}
-          {activeTab === 'Album' && (
-            <>
-
-              <ImageWrapper onClick={() => handleImageClick('6')}><Image src="https://i.pinimg.com/564x/0d/62/15/0d6215dbb4d6f824787ba192f1dc7a84.jpg" alt="Album 1" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('7')}><Image src="https://i.pinimg.com/564x/d0/71/b6/d071b61fcd51cc0677359d6a35ed11d5.jpg" alt="Album 1" /></ImageWrapper>
-              
-            </>
-          )}
-          {activeTab === 'Tag' && (
-            <>
-              <ImageWrapper onClick={() => handleImageClick('8')}><Image src="https://i.pinimg.com/564x/ee/58/27/ee5827b6b2f0672e98347c2e5dda88af.jpg" alt="Tag 1" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('9')}><Image src="https://i.pinimg.com/564x/00/fa/d3/00fad3ecb39ed16b6c547fb40f5f9039.jpg" alt="Tag 2" /></ImageWrapper>
-              <ImageWrapper onClick={() => handleImageClick('10')}><Image src="https://i.pinimg.com/236x/44/95/45/449545e213492a3a05ec20dffedc9f50.jpg" alt="Tag 3" /></ImageWrapper>
-            </>
-          )}
-      </ImageGrid>
+            )
+          ))}
+          {activeTab === 'Videos' && posts.map((post) => (
+            post.type === 'video' && post.media && (
+              <ImageWrapper key={post.id} onClick={() => handleImageClick(post.id)}>
+                <Image src={post.media} alt={post.caption || 'Post image'} />
+              </ImageWrapper>
+            )
+          ))}
+           {activeTab === 'Album' && posts.map((post) => (
+            post.type === 'album' && post.media && (
+              <ImageWrapper key={post.id} onClick={() => handleImageClick(post.id)}>
+                <Image src={post.media} alt={post.caption || 'Post image'} />
+              </ImageWrapper>
+            )
+          ))}
+          {/* Incluir más condiciones si tienes otros tipos de contenido como 'Videos', 'Album', etc. */}
+        </ImageGrid>
       </ImageSectionContainer>
     </>
   );
