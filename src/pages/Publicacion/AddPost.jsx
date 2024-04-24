@@ -1,7 +1,49 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { endpoints } from '../../services/data';
+import styled, { createGlobalStyle } from "styled-components";
 
+const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&display=swap');
+  
+  body {
+    font-family: 'Balsamiq Sans', cursive;
+    font-family: "Baloo Thambi 2", system-ui;
+  }
+`;
+
+const StyledPost = styled.nav`
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    label{
+        font-family: "Baloo Thambi 2", system-ui;
+    }
+    input, select {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        border: 1px solid transparent;
+        margin: 20px;
+        border-radius: 20px;
+        font-family: "Baloo Thambi 2", system-ui;
+        width: 205px;
+        height: 30px;
+    }
+    button {
+        width: 105px;
+        height: 40px;
+        margin: 24px;
+        margin-top: 5%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        border: 1px solid transparent;
+        border-radius: 20px;
+        font-family: "Balsamiq Sans", cursive;
+        background-color: #FFBC74;
+    }
+}
+`
 const AddPost = ({ userId }) => {
     const [media, setMedia] = useState('');
     const [caption, setCaption] = useState('');
@@ -45,8 +87,9 @@ const AddPost = ({ userId }) => {
     };
    
     return (
+        <StyledPost>
        <form onSubmit={handleSubmit}>
-         <label htmlFor="media">Media:</label>
+         <label htmlFor="media">Link new post:</label>
          <input
            type="text"
            id="media"
@@ -60,14 +103,15 @@ const AddPost = ({ userId }) => {
            value={caption}
            onChange={(e) => setCaption(e.target.value)}
          />
-         <label htmlFor="type">Tipo:</label>
+         <label htmlFor="type">Type:</label>
          <select id="type" value={type} onChange={(e) => setType(e.target.value)}>
            <option value="photo">Foto</option>
            <option value="video">Video</option>
            {/* Añade más opciones si es necesario */}
          </select>
-         <button type="submit">Añadir Post</button>
+         <button type="submit">Add Post</button>
        </form>
+       </StyledPost>
     );
    };
 export default AddPost;
